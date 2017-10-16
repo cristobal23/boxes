@@ -3,7 +3,7 @@ sudo: required
 language: ruby
 
 rvm:
-  - 2.3
+  - 2.2
   - rspec
   - serverspec
   - docker-api
