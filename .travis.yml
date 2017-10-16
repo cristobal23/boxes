@@ -5,7 +5,7 @@ language: ruby
 services:
   - docker
 
-before_script:
+install:
   - gem install rspec serverspec docker-api
 
 script:
