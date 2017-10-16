@@ -2,15 +2,12 @@ sudo: required
 
 language: ruby
 
-rvm:
-  - 2.3
-  - rspec
-  - serverspec
-  - docker-api
-
 services:
   - docker
 
+before_script:
+  - gem install rspec serverspec docker-api
+
 script:
-  - bundle exec rspec spec/Dockerfile_spec.rb
+  - rspec spec/Dockerfile_spec.rb
 
