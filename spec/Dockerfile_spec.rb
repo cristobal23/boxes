@@ -3,7 +3,7 @@ require "docker"
 
 describe "Dockerfile" do
   before(:all) do
-    image = Docker::Image.build_from_dir('.', { 'dockerfile' => 'Dockerfile', 't' => 'cristobal23/alpine:3.4', 'buildargs' => '{ "TAG": "3.4" }' })
+    image = Docker::Image.build_from_dir('.', { 'dockerfile' => 'Dockerfile', 't' => 'cristobal23/alpine:3.6', 'buildargs' => '{ "TAG": "3.6" }' })
 
     set :os, family: :linux
     set :backend, :docker
@@ -11,7 +11,7 @@ describe "Dockerfile" do
   end
 
   it "installs the right version of Alpine" do
-    expect(os_version).to include("3.4.6")
+    expect(os_version).to include("3.6.2")
   end
 
   def os_version
