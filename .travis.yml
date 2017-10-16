@@ -10,4 +10,3 @@ install:
 
 script:
   - rspec spec/Dockerfile_spec.rb
-

@@ -18,4 +18,3 @@ describe "Dockerfile" do
     command("cat /etc/alpine-release").stdout
   end
 end
-
