@@ -3,7 +3,7 @@ require "docker"
 
 describe "Dockerfile" do
   before(:all) do
-    image = Docker::Image.build_from_dir('.')
+    image = Docker::Image.build_from_dir('.', { 'dockerfile' => 'Dockerfile' })
 
     set :os, family: :linux
     set :backend, :docker
