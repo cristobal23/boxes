@@ -19,12 +19,6 @@ script:
 
 after_success:
   - docker build -f Dockerfile -t "$DOCKER_USERNAME"/alpine:3.6 --build-arg TAG=3.6 .
-
-before_deploy:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-
-deploy:
   - docker push "$DOCKER_USERNAME"/alpine:3.6
-
-after_deploy:
   - docker logout
