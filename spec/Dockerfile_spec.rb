@@ -3,7 +3,9 @@ require "docker"
 
 describe "Dockerfile" do
   before(:all) do
-    image = Docker::Image.build_from_dir('.', { 'dockerfile' => 'Dockerfile', 't' => 'cristobal23/alpine:3.6', 'buildargs' => '{ "TAG": "3.6" }' })
+    image = Docker::Image.build_from_dir('.', { 'dockerfile' => 'Dockerfile',
+                                                't' => 'cristobal23/alpine:3.6',
+                                                'buildargs' => '{ "TAG": "3.6" }' })
 
     set :os, family: :linux
     set :backend, :docker
