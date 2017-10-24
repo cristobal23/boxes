@@ -5,8 +5,20 @@ language: ruby
 services:
   - docker
 
+before_install:
+  - docker version
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - docker version
+
 install:
   - gem install rspec serverspec docker-api
 
 script:
   - rspec spec/Dockerfile_spec.rb
+
+after_success:
+  - docker build -f Dockerfile -t "$DOCKER_USERNAME"/alpine:3.6 --build-arg TAG=3.6 .
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push "$DOCKER_USERNAME"/alpine:3.6
+  - docker logout

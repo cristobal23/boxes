@@ -1,1 +1,2 @@
-FROM alpine:3.4
+ARG TAG=latest
+FROM alpine:$TAG
