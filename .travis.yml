@@ -1,6 +1,6 @@
 sudo: required
 
-language: ruby
+language: python
 
 services:
   - docker
@@ -12,10 +12,10 @@ before_install:
   - docker version
 
 install:
-  - gem install rspec serverspec docker-api
+  - pip install -r requirements.txt
 
 script:
-  - rspec spec/Dockerfile_spec.rb
+  - py.test -v test_dockerfile.py
 
 after_success:
   - docker build -f Dockerfile -t "$DOCKER_USERNAME"/alpine:3.6 --build-arg TAG=3.6 .
