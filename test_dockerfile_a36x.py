@@ -5,6 +5,7 @@ import testinfra
 
 @pytest.fixture(scope='session')
 def host(request):
+    """Build Docker containers with Testinfra by overloading the host fixture."""
     # build local ./Dockerfile
     subprocess.check_call(
         [
@@ -37,5 +38,6 @@ def host(request):
 
 
 def test_myimage(host):
+    """Test the built Docker container."""
     # 'host' now binds to the container
     assert host.check_output('cat /etc/alpine-release') == '3.6.2'
