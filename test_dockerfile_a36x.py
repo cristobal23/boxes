@@ -1,11 +1,18 @@
+import os
 import pytest
 import subprocess
 import testinfra
 
 
+DOCKER_TAG = '3.6'
+
+
 @pytest.fixture(scope='session')
 def host(request):
     """Build Docker containers with Testinfra by overloading the host fixture."""
+    username = os.environ['DOCKER_USERNAME']
+    image_name = username + '/alpine:' + DOCKER_TAG
+
     # build local ./Dockerfile
     subprocess.check_call(
         [
@@ -14,9 +21,9 @@ def host(request):
             '-f',
             'Dockerfile',
             '-t',
-            'cristobal23/alpine:3.6',
+            image_name,
             '--build-arg',
-            'TAG=3.6',
+            'TAG=' + DOCKER_TAG,
             '.',
         ]
     )
@@ -24,7 +31,7 @@ def host(request):
     # run a container
     docker_id = (
         subprocess.check_output(
-            ['docker', 'run', '-d', 'cristobal23/alpine:3.6', 'tail', '-f', '/dev/null']
+            ['docker', 'run', '-d', image_name, 'tail', '-f', '/dev/null']
         )
         .decode()
         .strip()
