@@ -45,4 +45,4 @@ def host(request):
 def test_myimage(host):
     """Test the built Docker container."""
     # 'host' now binds to the container
-    assert host.check_output('cat /etc/alpine-release') == '3.7.0'
+    assert host.check_output('cat /etc/alpine-release') == '3.8.0'
