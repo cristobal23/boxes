@@ -1,0 +1,34 @@
+---
+name: test
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - '*.py'
+
+jobs:
+  testinfra:
+    name: Testinfra with Docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          pip install pytest testinfra
+
+      - name: Verify Docker CLI availability
+        run: docker --version
+
+      - name: Run Testinfra tests
+        run: py.test -v test_*.py
+        env:
+          DOCKER_USERNAME: cristobal23
