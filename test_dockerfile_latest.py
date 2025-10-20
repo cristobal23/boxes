@@ -44,11 +44,11 @@ def host():
     )
 
     # Return a testinfra connection to the container
-    host = testinfra.get_host(f"docker://{docker_id}")
-    yield host
-
-    # Cleanup
-    subprocess.check_call(["docker", "rm", "-f", docker_id])
+    try:
+        host = testinfra.get_host(f"docker://{docker_id}")
+        yield host
+    finally:
+        subprocess.check_call(["docker", "rm", "-f", docker_id])
 
 
 def test_latest_version(host):

@@ -56,7 +56,6 @@ def docker_host(request):
         host = testinfra.get_host(f"docker://{docker_id}")
         yield host, docker_tag
     finally:
-        # Cleanup after tests
         subprocess.check_call(["docker", "rm", "-f", docker_id])
 
 
