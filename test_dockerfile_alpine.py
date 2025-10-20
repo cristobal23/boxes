@@ -52,11 +52,12 @@ def docker_host(request):
     )
 
     # Provide testinfra connection
-    host = testinfra.get_host(f"docker://{docker_id}")
-    yield host, docker_tag
-
-    # Cleanup after tests
-    subprocess.check_call(["docker", "rm", "-f", docker_id])
+    try:
+        host = testinfra.get_host(f"docker://{docker_id}")
+        yield host, docker_tag
+    finally:
+        # Cleanup after tests
+        subprocess.check_call(["docker", "rm", "-f", docker_id])
 
 
 def test_alpine_version(docker_host):
