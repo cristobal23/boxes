@@ -2,6 +2,7 @@ import os
 import pytest
 import subprocess
 import testinfra
+import shutil
 
 
 # List of Alpine versions to test
@@ -12,6 +13,9 @@ ALPINE_VERSIONS = [
     "3.22",
 ]
 
+
+if shutil.which("docker") is None:
+    pytest.skip("Docker is not installed or not in PATH", allow_module_level=True)
 
 @pytest.fixture(scope='session', params=ALPINE_VERSIONS)
 def host(request):

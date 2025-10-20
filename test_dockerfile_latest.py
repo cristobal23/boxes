@@ -2,11 +2,15 @@ import os
 import pytest
 import subprocess
 import testinfra
+import shutil
 
 
 DOCKER_TAG = "latest"
 EXPECTED_VERSION = "3.22.2"
 
+
+if shutil.which("docker") is None:
+    pytest.skip("Docker is not installed or not in PATH", allow_module_level=True)
 
 @pytest.fixture(scope='session')
 def host(request):
