@@ -18,7 +18,7 @@ if shutil.which("docker") is None:
     pytest.skip("Docker is not installed or not in PATH", allow_module_level=True)
 
 @pytest.fixture(scope='session', params=ALPINE_VERSIONS)
-def host(request):
+def docker_host(request):
     """Build and run Docker containers for multiple Alpine versions."""
     docker_tag = request.param
     username = os.environ.get("DOCKER_USERNAME", "cristobal23")
@@ -56,9 +56,9 @@ def host(request):
     subprocess.check_call(["docker", "rm", "-f", docker_id])
 
 
-def test_alpine_version(host):
+def test_alpine_version(docker_host):
     """Ensure the container reports the expected Alpine version."""
-    h, docker_tag = host
+    h, docker_tag = docker_host
     release = h.check_output("cat /etc/alpine-release").strip()
 
     # Basic version consistency check
