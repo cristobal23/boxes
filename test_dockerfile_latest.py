@@ -23,6 +23,7 @@ def host():
         [
             "docker",
             "build",
+            "--pull",
             "-f",
             "Dockerfile",
             "-t",
