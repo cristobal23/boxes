@@ -37,7 +37,8 @@ def docker_host(request):
             "--build-arg",
             f"TAG={docker_tag}",
             ".",
-        ]
+        ],
+        timeout=900,
     )
 
     # Run the container
