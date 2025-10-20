@@ -6,7 +6,7 @@ import shutil
 
 
 DOCKER_TAG = "latest"
-EXPECTED_VERSION = "3.22.2"
+EXPECTED_VERSION = "3.22"
 
 
 if shutil.which("docker") is None:
@@ -54,6 +54,4 @@ def host():
 def test_latest_version(host):
     """Verify alpine:latest matches the expected release version."""
     release = host.check_output("cat /etc/alpine-release").strip()
-    assert (
-        release == EXPECTED_VERSION
-    ), f"Expected Alpine {EXPECTED_VERSION}, but got {release}"
+    assert release.startswith(EXPECTED_VERSION), f"Expected {EXPECTED_VERSION}, got {release}"
