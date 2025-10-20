@@ -44,7 +44,8 @@ def docker_host(request):
     # Run the container
     docker_id = (
         subprocess.check_output(
-            ["docker", "run", "-d", image_name, "tail", "-f", "/dev/null"]
+            ["docker", "run", "-d", image_name, "tail", "-f", "/dev/null"],
+            timeout=60,
         )
         .decode()
         .strip()
