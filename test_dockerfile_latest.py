@@ -13,7 +13,7 @@ if shutil.which("docker") is None:
     pytest.skip("Docker is not installed or not in PATH", allow_module_level=True)
 
 @pytest.fixture(scope='session')
-def host(request):
+def host():
     """Build and run a Docker container for alpine:latest."""
     username = os.environ.get("DOCKER_USERNAME", "cristobal23")
     image_name = f"{username}/alpine:{DOCKER_TAG}"
