@@ -29,6 +29,7 @@ def docker_host(request):
         [
             "docker",
             "build",
+            "--pull"
             "-f",
             "Dockerfile",
             "-t",
