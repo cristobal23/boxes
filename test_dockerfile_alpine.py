@@ -5,20 +5,26 @@ import testinfra
 import shutil
 
 
-DOCKER_TAG = "latest"
-EXPECTED_VERSION = "3.22"
+# List of Alpine versions to test
+ALPINE_VERSIONS = [
+    "3.19",
+    "3.20",
+    "3.21",
+    "3.22",
+]
 
 
 if shutil.which("docker") is None:
     pytest.skip("Docker is not installed or not in PATH", allow_module_level=True)
 
-@pytest.fixture(scope='session')
-def host():
-    """Build and run a Docker container for alpine:latest."""
+@pytest.fixture(scope='session', params=ALPINE_VERSIONS)
+def docker_host(request):
+    """Build and run Docker containers for multiple Alpine versions."""
+    docker_tag = request.param
     username = os.environ.get("DOCKER_USERNAME", "cristobal23")
-    image_name = f"{username}/alpine:{DOCKER_TAG}"
+    image_name = f"{username}/alpine:{docker_tag}"
 
-    # Build Docker image using the latest alpine tag
+    # Build Docker image with the given tag
     subprocess.check_call(
         [
             "docker",
@@ -28,6 +34,8 @@ def host():
             "Dockerfile",
             "-t",
             image_name,
+            "--build-arg",
+            f"TAG={docker_tag}",
             ".",
         ],
         timeout=900,
@@ -43,15 +51,18 @@ def host():
         .strip()
     )
 
-    # Return a testinfra connection to the container
+    # Provide testinfra connection
     try:
         host = testinfra.get_host(f"docker://{docker_id}")
-        yield host
+        yield host, docker_tag
     finally:
         subprocess.check_call(["docker", "rm", "-f", docker_id])
 
 
-def test_latest_version(host):
-    """Verify alpine:latest matches the expected release version."""
-    release = host.check_output("cat /etc/alpine-release").strip()
-    assert release.startswith(EXPECTED_VERSION), f"Expected {EXPECTED_VERSION}, got {release}"
+def test_alpine_version(docker_host):
+    """Ensure the container reports the expected Alpine version."""
+    h, docker_tag = docker_host
+    release = h.check_output("cat /etc/alpine-release").strip()
+
+    # Basic version consistency check
+    assert release.startswith(docker_tag), f"Expected {docker_tag}, got {release}"

@@ -1,2 +1,2 @@
 # boxes
-A collection of publicly available Docker containers
+This repository builds Docker containers and runs tests with continuous integration.
